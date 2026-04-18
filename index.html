@@ -1,293 +1,53 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Oracle Risk Scanner</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&family=Space+Grotesk:wght@400;600;700&display=swap');
 *{margin:0;padding:0;box-sizing:border-box;}
-body{background:#06060C;font-family:'JetBrains Mono',monospace;color:#E0E0E0;min-height:100vh;padding:12px;}
+body{background:#06060C;font-family:'Courier New',monospace;color:#E0E0E0;min-height:100vh;padding:12px;}
 .wrap{max-width:720px;margin:0 auto;}
-.header{text-align:center;margin-bottom:20px;position:relative;}
-.header::before{content:'';position:absolute;top:-40px;left:50%;transform:translateX(-50%);width:200px;height:200px;background:radial-gradient(circle,#FF000015 0%,transparent 70%);pointer-events:none;}
-.icon{font-size:36px;margin-bottom:4px;}
-.tag{font-size:9px;letter-spacing:5px;color:#FF4444;margin-bottom:2px;font-weight:700;}
-h1{font-size:20px;font-weight:800;font-family:'Space Grotesk',sans-serif;color:#fff;letter-spacing:-0.5px;}
-.sub{font-size:10px;color:#555;margin-top:4px;line-height:1.4;}
-.alert-banner{background:linear-gradient(135deg,#1A0505,#150808);border:1px solid #FF444430;border-radius:10px;padding:12px;margin-bottom:16px;text-align:center;}
-.alert-banner .alert-title{font-size:11px;color:#FF4444;font-weight:700;letter-spacing:2px;margin-bottom:4px;}
-.alert-banner .alert-text{font-size:10px;color:#888;line-height:1.5;}
+.header{text-align:center;margin-bottom:20px;}
+.tag{font-size:9px;letter-spacing:5px;color:#FF4444;font-weight:700;}
+h1{font-size:20px;font-weight:800;color:#fff;}
+.sub{font-size:10px;color:#555;margin-top:4px;}
+.alert-banner{background:#1A0505;border:1px solid #FF444430;border-radius:10px;padding:12px;margin-bottom:16px;text-align:center;}
+.alert-banner .at{font-size:11px;color:#FF4444;font-weight:700;letter-spacing:2px;margin-bottom:4px;}
+.alert-banner .ax{font-size:10px;color:#888;line-height:1.5;}
 .alert-banner b{color:#FFD600;}
 .stats{display:flex;gap:6px;margin-bottom:14px;}
 .stat{flex:1;padding:10px 6px;background:#0D0D15;border:1px solid #1A1A25;border-radius:8px;text-align:center;}
-.stat-val{font-size:18px;font-weight:800;font-family:'Space Grotesk',sans-serif;}
-.stat-label{font-size:7px;color:#555;margin-top:2px;letter-spacing:1px;}
+.sv{font-size:18px;font-weight:800;}
+.sl{font-size:7px;color:#555;margin-top:2px;letter-spacing:1px;}
 input,select{width:100%;padding:9px 12px;background:#0D0D15;border:1px solid #1A1A25;border-radius:8px;color:#CCC;font-size:11px;font-family:inherit;outline:none;}
-input:focus{border-color:#FF444450;}
 .filters{display:flex;gap:6px;margin-bottom:10px;}
 .filters select{flex:1;font-size:10px;padding:8px;}
 .tvl-row{display:flex;gap:6px;margin-bottom:14px;}
 .tvl-row>div{flex:1;}
-.tvl-row label{font-size:8px;color:#444;display:block;margin-bottom:3px;letter-spacing:1px;}
+.tvl-row label{font-size:8px;color:#444;display:block;margin-bottom:3px;}
 .tvl-row select{font-size:10px;padding:8px;}
-.card{padding:12px 14px;background:#0D0D15;border:1px solid #1A1A25;border-radius:10px;cursor:pointer;margin-bottom:6px;transition:all 0.2s;position:relative;overflow:hidden;}
-.card:active{transform:scale(0.98);}
-.card.critical{background:linear-gradient(135deg,#1A0808,#120505);border-color:#FF444425;}
+.card{padding:12px;background:#0D0D15;border:1px solid #1A1A25;border-radius:10px;cursor:pointer;margin-bottom:6px;position:relative;overflow:hidden;}
+.card.critical{background:#1A0808;border-color:#FF444425;}
 .card.critical::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:#FF4444;}
-.card.high{background:linear-gradient(135deg,#1A0F05,#120A02);border-color:#FF880025;}
+.card.high{background:#1A0F05;border-color:#FF880025;}
 .card.high::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:#FF8800;}
-.card.medium{background:linear-gradient(135deg,#1A1505,#121002);border-color:#FFD60020;}
+.card.medium{background:#1A1505;border-color:#FFD60020;}
 .card.medium::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:#FFD600;}
-.card-top{display:flex;justify-content:space-between;align-items:flex-start;}
-.card-name{font-size:13px;font-weight:700;color:#EEE;font-family:'Space Grotesk',sans-serif;}
-.card-meta{font-size:9px;color:#555;margin-top:2px;}
-.card-right{text-align:right;}
-.card-tvl{font-size:13px;font-weight:700;color:#FFD600;}
-.risk-badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:8px;font-weight:700;letter-spacing:1px;margin-top:3px;}
-.risk-critical{background:#FF444420;color:#FF4444;border:1px solid #FF444440;}
-.risk-high{background:#FF880020;color:#FF8800;border:1px solid #FF880040;}
-.risk-medium{background:#FFD60020;color:#FFD600;border:1px solid #FFD60040;}
-.risk-low{background:#00BFA520;color:#00BFA5;border:1px solid #00BFA540;}
-.expand{padding:12px 14px;background:#08080F;border:1px solid #222;border-top:none;border-radius:0 0 10px 10px;font-size:10px;margin-bottom:6px;}
-.expand-row{margin-bottom:8px;}
-.expand-row span{color:#444;}
-.risk-factors{margin:10px 0;padding:10px;background:#0A0A12;border:1px solid #FF444420;border-radius:8px;}
-.risk-factors .rf-title{font-size:8px;color:#FF4444;font-weight:700;letter-spacing:2px;margin-bottom:8px;}
-.rf-item{display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:10px;}
-.rf-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
-.rf-dot.red{background:#FF4444;}
-.rf-dot.orange{background:#FF8800;}
-.rf-dot.yellow{background:#FFD600;}
-.rf-dot.green{background:#00BFA5;}
-.links{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;}
-.links a{padding:5px 10px;background:#1A1A25;border-radius:6px;color:#CCC;font-size:9px;text-decoration:none;border:1px solid #222;}
-.links a.danger{background:#FF444415;border:1px solid #FF444440;color:#FF4444;font-weight:700;}
-.loading{text-align:center;padding:40px;color:#444;font-size:11px;}
-.pulse{animation:pulse 1.5s ease-in-out infinite;}
-@keyframes pulse{0%,100%{opacity:0.4;}50%{opacity:1;}}
-.footer{text-align:center;padding:20px;color:#333;font-size:9px;margin-top:20px;}
-.footer a{color:#FF4444;text-decoration:none;}
-</style>
-</head>
-<body>
-<div class="wrap">
-  <div class="header">
-    <div class="icon">🔴</div>
-    <div class="tag">DEFI SECURITY TOOL</div>
-    <h1>ORACLE RISK SCANNER</h1>
-    <div class="sub">Find lending & vault protocols vulnerable to oracle manipulation</div>
-  </div>
-  <div class="alert-banner">
-    <div class="alert-title">⚡ WHY THIS MATTERS</div>
-    <div class="alert-text">Rhea Finance lost <b>$7.6M</b> · Drift Protocol lost <b>$285M</b> · Both via oracle manipulation.<br>This tool finds the next targets before hackers do.</div>
-  </div>
-  <div class="stats">
-    <div class="stat"><div class="stat-val" style="color:#FF4444" id="s-targets">0</div><div class="stat-label">TARGETS</div></div>
-    <div class="stat"><div class="stat-val" style="color:#FF8800" id="s-high">0</div><div class="stat-label">HIGH RISK</div></div>
-    <div class="stat"><div class="stat-val" style="color:#FFD600" id="s-tvl">$0</div><div class="stat-label">TOTAL TVL AT RISK</div></div>
-  </div>
-  <input type="text" id="search" placeholder="Search protocols..." style="margin-bottom:10px">
-  <div class="filters">
-    <select id="chain"><option value="All">All Chains</option><option>Ethereum</option><option>Arbitrum</option><option>Base</option><option>Optimism</option><option>Polygon</option><option>BSC</option><option>Avalanche</option><option>Solana</option></select>
-    <select id="sort"><option value="risk">Highest Risk</option><option value="tvl">Highest TVL</option><option value="tvl_asc">Lowest TVL</option></select>
-  </div>
-  <div class="tvl-row">
-    <div><label>MIN TVL</label><select id="minTvl"><option value="100000">$100K</option><option value="500000" selected>$500K</option><option value="1000000">$1M</option><option value="5000000">$5M</option></select></div>
-    <div><label>MAX TVL</label><select id="maxTvl"><option value="5000000">$5M</option><option value="20000000">$20M</option><option value="50000000" selected>$50M</option><option value="100000000">$100M</option><option value="500000000">$500M</option></select></div>
-  </div>
-  <div id="results"><div class="loading"><span class="pulse">🔍 Scanning 7000+ protocols for oracle risks...</span></div></div>
-  <div class="footer">Built by <a href="https://github.com/Jonny1111111111111" target="_blank">@godid242</a> · Powered by DeFiLlama API</div>
-</div>
-<script>
-const EXPLORERS={Ethereum:"etherscan.io",Arbitrum:"arbiscan.io",Base:"basescan.org",Optimism:"optimistic.etherscan.io",Polygon:"polygonscan.com",BSC:"bscscan.com",Avalanche:"snowtrace.io",Fantom:"ftmscan.com",Solana:"solscan.io"};
-const KNOWN_AUDITED=["aave","uniswap","compound","curve","maker","lido","convex","yearn","sushiswap","balancer","synthetix","pancakeswap","frax","rocket-pool","eigenlayer","morpho","spark","sky","ethena","pendle","gmx","radiant","camelot","velodrome","aerodrome","stargate","layerzero","chainlink","wormhole","across","hop","synapse","beefy","alpaca","venus","benqi","trader-joe","dodo","kyberswap","1inch"];
-const RISKY_CATEGORIES=["Lending","CDP","Yield","Yield Aggregator","Farm","Liquid Staking","Leveraged Farming","RWA Lending","Undercollateralized Lending","Indexes","Derivatives","Options","Synthetics","Algo-Stables","Insurance"];
-const ORACLE_KEYWORDS=["oracle","price","feed","chainlink","pyth","twap","uniswap"];
-
-let allProtocols=[];
-let expandedId=null;
-
-function fmt(v){if(v>=1e9)return`$${(v/1e9).toFixed(2)}B`;if(v>=1e6)return`$${(v/1e6).toFixed(1)}M`;if(v>=1e3)return`$${(v/1e3).toFixed(0)}K`;return`$${v.toFixed(0)}`;}
-
-function calcRisk(p){
-let score=0;
-const name=p.name.toLowerCase();
-const slug=(p.slug||””).toLowerCase();
-const cat=(p.category||””).toLowerCase();
-// Category risk
-if([“lending”,“cdp”,“undercollateralized lending”,“rwa lending”].includes(cat))score+=40;
-else if([“yield”,“yield aggregator”,“leveraged farming”,“farm”].includes(cat))score+=25;
-else if([“derivatives”,“options”,“synthetics”,“algo-stables”].includes(cat))score+=30;
-else if([“indexes”,“liquid staking”].includes(cat))score+=15;
-// Unaudited = higher risk
-const isKnown=KNOWN_AUDITED.some(a=>name.includes(a)||slug.includes(a));
-const hasAudit=p.audit_links&&p.audit_links.length>0;
-if(!isKnown&&!hasAudit)score+=30;
-// TVL sweet spot (high enough to be worth attacking, low enough to have weaker security)
-if(p.tvl>=1e6&&p.tvl<=20e6)score+=15;
-else if(p.tvl>20e6&&p.tvl<=50e6)score+=10;
-// Multiple chains = more oracle surface
-if(p.chains&&p.chains.length>=3)score+=10;
-else if(p.chains&&p.chains.length>=2)score+=5;
-// Newer protocols
-if(p.change_1d!=null&&Math.abs(p.change_1d)>10)score+=5;
-// Small or unknown = likely weaker oracle setup
-if(p.tvl<5e6&&!isKnown)score+=10;
-
-let level=“LOW”;
-if(score>=70)level=“CRITICAL”;
-else if(score>=50)level=“HIGH”;
-else if(score>=30)level=“MEDIUM”;
-return{score,level};
-}
-
-function getRiskFactors(p){
-const factors=[];
-const name=p.name.toLowerCase();
-const slug=(p.slug||””).toLowerCase();
-const cat=(p.category||””).toLowerCase();
-const isKnown=KNOWN_AUDITED.some(a=>name.includes(a)||slug.includes(a));
-const hasAudit=p.audit_links&&p.audit_links.length>0;
-
-if([“lending”,“cdp”,“undercollateralized lending”,“rwa lending”].includes(cat))
-factors.push({color:“red”,text:“Lending/CDP protocol — accepts collateral backed by oracle prices”});
-if([“derivatives”,“options”,“synthetics”].includes(cat))
-factors.push({color:“red”,text:“Derivatives protocol — relies on price feeds for settlement”});
-if([“yield”,“yield aggregator”,“leveraged farming”,“farm”].includes(cat))
-factors.push({color:“orange”,text:“Yield/Farm protocol — may use oracle for asset valuation”});
-if(!isKnown&&!hasAudit)
-factors.push({color:“red”,text:“No audit found — oracle implementation likely unreviewed”});
-if(hasAudit)
-factors.push({color:“green”,text:“Has audit link — but oracle logic may still be vulnerable”});
-if(p.chains&&p.chains.length>=3)
-factors.push({color:“orange”,text:`Multi-chain (${p.chains.length} chains) — larger oracle attack surface`});
-if(p.tvl>=1e6&&p.tvl<=10e6)
-factors.push({color:“yellow”,text:”$1M-$10M TVL — attractive target, possibly weaker security”});
-if(p.tvl>10e6&&p.tvl<=50e6)
-factors.push({color:“orange”,text:”$10M-$50M TVL — high value target for oracle exploit”});
-if(p.tvl>50e6)
-factors.push({color:“red”,text:`${fmt(p.tvl)} TVL — massive potential drain via oracle manipulation`});
-
-// Attack vector hints
-factors.push({color:“yellow”,text:“Check: Does it use spot price from DEX pool? (vulnerable to flash loan manipulation)”});
-factors.push({color:“yellow”,text:“Check: Does it accept arbitrary tokens as collateral? (fake token attack vector)”});
-
-return factors;
-}
-
-async function fetchData(){
-document.getElementById(“results”).innerHTML=’<div class="loading"><span class="pulse">🔍 Scanning 7000+ protocols for oracle risks…</span></div>’;
-try{
-const res=await fetch(“https://api.llama.fi/protocols”);
-if(!res.ok)throw new Error(“API failed”);
-const data=await res.json();
-allProtocols=data.filter(p=>{
-if(!p.tvl||p.tvl<=0)return false;
-const cat=(p.category||””).toLowerCase();
-return RISKY_CATEGORIES.some(c=>c.toLowerCase()===cat);
-}).map(p=>{
-const chains=p.chains||[];
-const evmChains=chains.filter(c=>EXPLORERS[c]);
-const risk=calcRisk(p);
-const addresses={};
-const addrRaw=p.address||””;
-if(addrRaw){addrRaw.split(”,”).forEach(a=>{const parts=a.trim().split(”:”);if(parts.length===2&&parts[1].startsWith(“0x”)){addresses[parts[0].charAt(0).toUpperCase()+parts[0].slice(1)]=parts[1];}else if(parts.length===1&&parts[0].startsWith(“0x”)){addresses[“Ethereum”]=parts[0];}});}
-return{id:p.slug||p.name,name:p.name,slug:p.slug,tvl:p.tvl,category:p.category||“Unknown”,chains,evmChains,url:p.url||””,github:p.github||[],auditLinks:p.audit_links||[],change_1d:p.change_1d,risk,addresses};
-});
-render();
-}catch(e){
-document.getElementById(“results”).innerHTML=`<div class="loading" style="color:#FF4444">Error: ${e.message}<br><button onclick="fetchData()" style="margin-top:10px;padding:8px 20px;background:#FF4444;border:none;border-radius:6px;color:#fff;font-family:inherit;cursor:pointer">Retry</button></div>`;
-}
-}
-
-function getFiltered(){
-const minTvl=Number(document.getElementById(“minTvl”).value);
-const maxTvl=Number(document.getElementById(“maxTvl”).value);
-const chain=document.getElementById(“chain”).value;
-const sortBy=document.getElementById(“sort”).value;
-const q=document.getElementById(“search”).value.toLowerCase();
-let result=allProtocols.filter(p=>p.tvl>=minTvl&&p.tvl<=maxTvl);
-if(chain!==“All”)result=result.filter(p=>p.chains.includes(chain));
-if(q)result=result.filter(p=>p.name.toLowerCase().includes(q)||p.category.toLowerCase().includes(q));
-if(sortBy===“tvl”)result.sort((a,b)=>b.tvl-a.tvl);
-else if(sortBy===“tvl_asc”)result.sort((a,b)=>a.tvl-b.tvl);
-else result.sort((a,b)=>b.risk.score-a.risk.score);
-return result;
-}
-
-function render(){
-const filtered=getFiltered();
-const high=filtered.filter(p=>p.risk.level===“CRITICAL”||p.risk.level===“HIGH”).length;
-let totalTvl=0;filtered.forEach(p=>totalTvl+=p.tvl);
-document.getElementById(“s-targets”).textContent=filtered.length;
-document.getElementById(“s-high”).textContent=high;
-document.getElementById(“s-tvl”).textContent=fmt(totalTvl);
-
-const EM={Ethereum:“etherscan.io”,Arbitrum:“arbiscan.io”,Base:“basescan.org”,Optimism:“optimistic.etherscan.io”,Polygon:“polygonscan.com”,BSC:“bscscan.com”,Avalanche:“snowtrace.io”,Fantom:“ftmscan.com”,ethereum:“etherscan.io”,arbitrum:“arbiscan.io”,base:“basescan.org”,optimism:“optimistic.etherscan.io”,polygon:“polygonscan.com”,bsc:“bscscan.com”,avalanche:“snowtrace.io”};
-
-let html=””;
-filtered.slice(0,50).forEach(p=>{
-const rl=p.risk.level.toLowerCase();
-const rc=rl===“critical”?”#FF4444”:rl===“high”?”#FF8800”:rl===“medium”?”#FFD600”:”#00BFA5”;
-const isE=expandedId===p.id;
-
-```
-html+=`<div class="card ${rl}" style="${isE?'border-radius:10px 10px 0 0':''}" onclick="toggle('${p.id}')">
-  <div class="card-top">
-    <div><div class="card-name">${p.name}</div><div class="card-meta">${p.category} · ${p.chains.slice(0,3).join(", ")}${p.chains.length>3?' +'+(p.chains.length-3):''}</div></div>
-    <div class="card-right"><div class="card-tvl">${fmt(p.tvl)}</div><div class="risk-badge risk-${rl}">${p.risk.level}</div></div>
-  </div>
-</div>`;
-
-if(isE){
-  let ch="";if(p.change_1d!=null){const c=p.change_1d;ch=`<span style="color:${c>=0?'#00BFA5':'#FF4444'};margin-left:6px">24h: ${c>=0?'+':''}${c.toFixed(1)}%</span>`;}
-
-  const factors=getRiskFactors(p);
-  let rfHtml=`<div class="risk-factors"><div class="rf-title">⚠ ORACLE RISK FACTORS</div>`;
-  factors.forEach(f=>{rfHtml+=`<div class="rf-item"><div class="rf-dot ${f.color}"></div><span>${f.text}</span></div>`;});
-  rfHtml+=`</div>`;
-
-  let ct="";const ak=Object.keys(p.addresses||{});
-  if(ak.length>0){ct=`<div style="margin:10px 0;padding:10px;background:#0A0A12;border:1px solid #FF444420;border-radius:8px"><div style="font-size:8px;color:#FF8800;font-weight:700;letter-spacing:1px;margin-bottom:6px">CONTRACT ADDRESSES</div>`;
-    ak.forEach(c=>{const a=p.addresses[c];const e=EM[c]||EM[c.toLowerCase()];
-      if(e){ct+=`<div style="margin-bottom:6px"><div style="font-size:8px;color:#555">${c}</div><a href="https://${e}/address/${a}#code" target="_blank" style="color:#FFD600;font-size:9px;word-break:break-all;text-decoration:none">${a}</a> <a href="https://${e}/address/${a}#code" target="_blank" style="display:inline-block;margin-left:4px;padding:2px 8px;background:#FF444415;border:1px solid #FF444440;border-radius:4px;color:#FF4444;font-size:8px;font-weight:700;text-decoration:none">AUDIT CODE</a></div>`;}
-      else{ct+=`<div style="margin-bottom:6px"><div style="font-size:8px;color:#555">${c}</div><span style="color:#888;font-size:9px;word-break:break-all">${a}</span></div>`;}
-    });ct+=`</div>`;}
-
-  let auditHtml="";
-  if(p.auditLinks.length>0){auditHtml=`<div class="expand-row"><span>Audits: </span>${p.auditLinks.map(l=>`<a href="${l}" target="_blank" style="color:#00BFA5;font-size:9px">${l.substring(0,50)}...</a>`).join("<br>")}</div>`;}
-
-  let lk='<div class="links">';
-  if(p.url)lk+=`<a href="${p.url}" target="_blank">Website</a>`;
-  if(p.github.length>0){const gh=p.github[0].startsWith("http")?p.github[0]:`https://github.com/${p.github[0]}`;lk+=`<a href="${gh}" target="_blank">GitHub</a>`;}
-  if(p.evmChains.length>0)lk+=`<a href="https://${EXPLORERS[p.evmChains[0]]}" target="_blank">${p.evmChains[0]} Explorer</a>`;
-  lk+=`<a href="https://defillama.com/protocol/${p.slug}" target="_blank" class="danger">DeFiLlama</a></div>`;
-
-  html+=`<div class="expand">
-    <div class="expand-row"><span>TVL: </span><b style="color:#FFD600">${fmt(p.tvl)}</b>${ch}</div>
-    <div class="expand-row"><span>Chains: </span>${p.chains.join(", ")}</div>
-    <div class="expand-row"><span>Risk Score: </span><b style="color:${rc}">${p.risk.score}/100 (${p.risk.level})</b></div>
-    ${rfHtml}${ct}${auditHtml}${lk}
-  </div>`;
-}
-```
-
-});
-if(filtered.length===0)html=’<div class="loading">No protocols found. Adjust filters.</div>’;
-if(filtered.length>50)html+=`<div style="text-align:center;padding:14px;color:#333;font-size:10px">Showing 50 of ${filtered.length}. Narrow filters.</div>`;
-document.getElementById(“results”).innerHTML=html;
-}
-
-function toggle(id){expandedId=expandedId===id?null:id;render();}
-document.getElementById(“search”).addEventListener(“input”,render);
-document.getElementById(“chain”).addEventListener(“change”,render);
-document.getElementById(“sort”).addEventListener(“change”,render);
-document.getElementById(“minTvl”).addEventListener(“change”,render);
-document.getElementById(“maxTvl”).addEventListener(“change”,render);
-fetchData();
-</script>
-
-</body>
-</html>
+.ct{display:flex;justify-content:space-between;align-items:flex-start;}
+.cn{font-size:13px;font-weight:700;color:#EEE;}
+.cm{font-size:9px;color:#555;margin-top:2px;}
+.cr{text-align:right;}
+.cv{font-size:13px;font-weight:700;color:#FFD600;}
+.rb{display:inline-block;padding:2px 8px;border-radius:4px;font-size:8px;font-weight:700;letter-spacing:1px;margin-top:3px;}
+.rc{background:#FF444420;color:#FF4444;border:1px solid #FF444440;}
+.rh{background:#FF880020;color:#FF8800;border:1px solid #FF880040;}
+.rm{background:#FFD60020;color:#FFD600;border:1px solid #FFD60040;}
+.rl2{background:#00BFA520;color:#00BFA5;border:1px solid #00BFA540;}
+.exp{padding:12px;background:#08080F;border:1px solid #222;border-top:none;border-radius:0 0 10px 10px;font-size:10px;margin-bottom:6px;}
+.er{margin-bottom:8px;}
+.er span{color:#444;}
+.rf{margin:10px 0;padding:10px;background:#0A0A12;border:1px solid #FF444420;border-radius:8px;}
+.rft{font-size:8px;color:#FF4444;font-weight:700;letter-spacing:2px;margin-bottom:8px;}
+.ri{display:flex;align-items:flex-start;gap:8px;margin-bottom:6px;font-size:10px;}
+.rd{width:6px;height:6px;border-radius:50%;flex​​​​​​​​​​​​​​​​
