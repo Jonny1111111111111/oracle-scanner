@@ -1,245 +1,254 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Oracle Risk Scanner</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{background:#06060C;font-family:monospace;color:#E0E0E0;min-height:100vh;padding:12px}
-.w{max-width:720px;margin:0 auto}
-.hd{text-align:center;margin-bottom:20px}
-.tg{font-size:9px;letter-spacing:5px;color:#FF4444;font-weight:700}
-h1{font-size:20px;font-weight:800;color:#fff}
-.sb{font-size:10px;color:#555;margin-top:4px}
-.ab{background:#1A0505;border:1px solid #FF444430;border-radius:10px;padding:12px;margin-bottom:16px;text-align:center}
-.ab .t1{font-size:11px;color:#FF4444;font-weight:700;letter-spacing:2px;margin-bottom:4px}
-.ab .t2{font-size:10px;color:#888;line-height:1.5}
-.ab b{color:#FFD600}
-.st{display:flex;gap:6px;margin-bottom:14px}
-.si{flex:1;padding:10px 6px;background:#0D0D15;border:1px solid #1A1A25;border-radius:8px;text-align:center}
-.sv{font-size:18px;font-weight:800}
-.sl{font-size:7px;color:#555;margin-top:2px;letter-spacing:1px}
-input,select{width:100%;padding:9px 12px;background:#0D0D15;border:1px solid #1A1A25;border-radius:8px;color:#CCC;font-size:11px;font-family:monospace;outline:none}
-.fl{display:flex;gap:6px;margin-bottom:10px}
-.fl select{flex:1;font-size:10px;padding:8px}
-.tr{display:flex;gap:6px;margin-bottom:14px}
-.tr>div{flex:1}
-.tr label{font-size:8px;color:#444;display:block;margin-bottom:3px}
-.tr select{font-size:10px;padding:8px}
-.cd{padding:12px;background:#0D0D15;border:1px solid #1A1A25;border-radius:10px;cursor:pointer;margin-bottom:6px;position:relative;overflow:hidden}
-.cd[data-r="CRITICAL"]{background:#1A0808;border-color:#FF444425}
-.cd[data-r="CRITICAL"]::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:#FF4444}
-.cd[data-r="HIGH"]{background:#1A0F05;border-color:#FF880025}
-.cd[data-r="HIGH"]::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:#FF8800}
-.cd[data-r="MEDIUM"]{background:#1A1505;border-color:#FFD60020}
-.cd[data-r="MEDIUM"]::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:#FFD600}
-.cd[data-r="LOW"]{background:#0D1512;border-color:#00BFA520}
-.cd[data-r="LOW"]::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:#00BFA5}
-.tp{display:flex;justify-content:space-between;align-items:flex-start}
-.nm{font-size:13px;font-weight:700;color:#EEE}
-.mt{font-size:9px;color:#555;margin-top:2px}
-.rt{text-align:right}
-.tv{font-size:13px;font-weight:700;color:#FFD600}
-.bg{display:inline-block;padding:2px 8px;border-radius:4px;font-size:8px;font-weight:700;letter-spacing:1px;margin-top:3px}
-.bg[data-r="CRITICAL"]{background:#FF444420;color:#FF4444;border:1px solid #FF444440}
-.bg[data-r="HIGH"]{background:#FF880020;color:#FF8800;border:1px solid #FF880040}
-.bg[data-r="MEDIUM"]{background:#FFD60020;color:#FFD600;border:1px solid #FFD60040}
-.bg[data-r="LOW"]{background:#00BFA520;color:#00BFA5;border:1px solid #00BFA540}
-.ex{padding:12px;background:#08080F;border:1px solid #222;border-top:none;border-radius:0 0 10px 10px;font-size:10px;margin-bottom:6px}
-.rw{margin-bottom:8px}
-.rw span{color:#444}
-.rf{margin:10px 0;padding:10px;background:#0A0A12;border:1px solid #FF444420;border-radius:8px}
-.rh{font-size:8px;color:#FF4444;font-weight:700;letter-spacing:2px;margin-bottom:8px}
-.ri{display:flex;align-items:flex-start;gap:8px;margin-bottom:6px;font-size:10px;line-height:1.4}
-.dt{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:5px}
-.cb{margin:10px 0;padding:10px;background:#0F1A0F;border:1px solid #00BFA530;border-radius:8px}
-.ch{font-size:8px;color:#00BFA5;font-weight:700;letter-spacing:1px;margin-bottom:6px}
-.ci{margin-bottom:8px}
-.cn2{font-size:8px;color:#555;margin-bottom:2px}
-.ca{color:#FFD600;font-size:9px;word-break:break-all;text-decoration:none}
-.vb{display:inline-block;margin-left:4px;padding:2px 8px;background:#FFD60020;border:1px solid #FFD60050;border-radius:4px;color:#FFD600;font-size:8px;font-weight:700;text-decoration:none}
-.lk{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
-.lk a{padding:5px 10px;background:#1A1A25;border-radius:6px;color:#CCC;font-size:9px;text-decoration:none;border:1px solid #222}
-.lk a.dg{background:#FF444415;border:1px solid #FF444440;color:#FF4444;font-weight:700}
-.ld{text-align:center;padding:40px;color:#444;font-size:11px}
-.pu{animation:pu 1.5s ease-in-out infinite}
-@keyframes pu{0%,100%{opacity:.4}50%{opacity:1}}
-.ft{text-align:center;padding:20px;color:#333;font-size:9px;margin-top:20px}
-.ft a{color:#FF4444;text-decoration:none}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:#0A0A0F; font-family:'SF Mono','Fira Code',monospace; color:#E0E0E0; min-height:100vh; padding:16px; }
+.wrap { max-width:700px; margin:0 auto; }
+.header { text-align:center; margin-bottom:20px; }
+.tag { font-size:10px; letter-spacing:4px; color:#FF4444; margin-bottom:4px; }
+h1 { font-size:22px; font-weight:800; color:#fff; }
+.sub { font-size:10px; color:#666; margin-top:4px; }
+.alert { background:#1A0505; border:1px solid #FF444430; border-radius:8px; padding:10px; margin-bottom:16px; text-align:center; font-size:10px; color:#888; line-height:1.5; }
+.alert b { color:#FFD600; }
+.alert .at { color:#FF4444; font-weight:700; font-size:11px; letter-spacing:2px; margin-bottom:4px; }
+.stats { display:flex; gap:8px; margin-bottom:16px; }
+.stat { flex:1; padding:10px 8px; background:#111118; border-radius:8px; text-align:center; }
+.stat-val { font-size:18px; font-weight:800; }
+.stat-label { font-size:8px; color:#666; margin-top:2px; }
+input,select { width:100%; padding:10px 12px; background:#111118; border:1px solid #222; border-radius:8px; color:#CCC; font-size:12px; font-family:inherit; outline:none; }
+.filters { display:flex; gap:6px; margin-bottom:12px; }
+.filters select { flex:1; min-width:100px; font-size:11px; padding:8px; }
+.tvl-row { display:flex; gap:6px; margin-bottom:16px; }
+.tvl-row > div { flex:1; }
+.tvl-row label { font-size:9px; color:#555; display:block; margin-bottom:4px; }
+.tvl-row select { font-size:11px; padding:8px; }
+.card { padding:12px 14px; background:#111118; border:1px solid #1A1A25; border-radius:10px; cursor:pointer; margin-bottom:6px; }
+.card.critical { background:#1A0808; border-left:3px solid #FF4444; }
+.card.high { background:#1A0F05; border-left:3px solid #FF8800; }
+.card.medium { background:#1A1505; border-left:3px solid #FFD600; }
+.card-top { display:flex; justify-content:space-between; align-items:flex-start; }
+.card-name { font-size:13px; font-weight:700; color:#EEE; }
+.card-meta { font-size:10px; color:#666; margin-top:2px; }
+.card-tvl { font-size:14px; font-weight:700; color:#FFD600; text-align:right; }
+.card-status { font-size:8px; font-weight:700; letter-spacing:1px; margin-top:2px; text-align:right; }
+.expand { padding:12px 14px; background:#0D0D14; border:1px solid #333; border-top:none; border-radius:0 0 10px 10px; font-size:11px; margin-bottom:6px; }
+.expand-row { margin-bottom:8px; }
+.expand-row span { color:#555; }
+.rf { margin:10px 0; padding:10px; background:#0A0A12; border:1px solid #FF444420; border-radius:8px; }
+.rf-t { font-size:8px; color:#FF4444; font-weight:700; letter-spacing:2px; margin-bottom:8px; }
+.rf-i { margin-bottom:6px; font-size:10px; padding-left:14px; position:relative; line-height:1.4; }
+.rf-i::before { content:''; position:absolute; left:0; top:5px; width:6px; height:6px; border-radius:50%; }
+.rf-i.red::before { background:#FF4444; }
+.rf-i.orange::before { background:#FF8800; }
+.rf-i.yellow::before { background:#FFD600; }
+.rf-i.green::before { background:#00BFA5; }
+.cbox { margin:10px 0; padding:10px; background:#0F1A0F; border:1px solid #00BFA530; border-radius:8px; }
+.links { display:flex; gap:6px; flex-wrap:wrap; margin-top:10px; }
+.links a { padding:6px 12px; background:#222; border-radius:6px; color:#CCC; font-size:10px; text-decoration:none; }
+.links a.primary { background:#FF444420; border:1px solid #FF444450; color:#FF4444; font-weight:700; }
+.loading { text-align:center; padding:40px; color:#555; }
+.footer { text-align:center; padding:20px; color:#333; font-size:9px; }
+.footer a { color:#FF4444; text-decoration:none; }
 </style>
 </head>
 <body>
-<div class="w">
-<div class="hd"><div style="font-size:36px">🔴</div><div class="tg">DEFI SECURITY TOOL</div><h1>ORACLE RISK SCANNER</h1><div class="sb">Find lending &amp; vault protocols vulnerable to oracle manipulation</div></div>
-<div class="ab"><div class="t1">⚡ WHY THIS MATTERS</div><div class="t2">Rhea Finance lost <b>$7.6M</b> · Drift Protocol lost <b>$285M</b><br>Both via oracle manipulation. Find the next targets before hackers do.</div></div>
-<div class="st"><div class="si"><div class="sv" style="color:#FF4444" id="s1">0</div><div class="sl">TARGETS</div></div><div class="si"><div class="sv" style="color:#FF8800" id="s2">0</div><div class="sl">HIGH RISK</div></div><div class="si"><div class="sv" style="color:#FFD600" id="s3">$0</div><div class="sl">TVL AT RISK</div></div></div>
-<input type="text" id="search" placeholder="Search protocols..." style="margin-bottom:10px">
-<div class="fl"><select id="chain"><option value="All">All Chains</option><option>Ethereum</option><option>Arbitrum</option><option>Base</option><option>Optimism</option><option>Polygon</option><option>BSC</option><option>Avalanche</option></select><select id="sort"><option value="risk">Highest Risk</option><option value="tvl">Highest TVL</option></select></div>
-<div class="tr"><div><label>MIN TVL</label><select id="minTvl"><option value="100000">$100K</option><option value="500000" selected>$500K</option><option value="1000000">$1M</option><option value="5000000">$5M</option></select></div><div><label>MAX TVL</label><select id="maxTvl"><option value="10000000">$10M</option><option value="50000000" selected>$50M</option><option value="100000000">$100M</option><option value="500000000">$500M</option></select></div></div>
-<div id="res"><div class="ld"><span class="pu">Scanning protocols...</span></div></div>
-<div class="ft">Built by <a href="https://github.com/Jonny1111111111111">@godid242</a> · DeFiLlama API</div>
+<div class="wrap" id="app">
+  <div class="header">
+    <div style="font-size:32px">🔴</div>
+    <div class="tag">DEFI SECURITY TOOL</div>
+    <h1>ORACLE RISK SCANNER</h1>
+    <div class="sub">Find lending & vault protocols vulnerable to oracle manipulation</div>
+  </div>
+  <div class="alert">
+    <div class="at">⚡ WHY THIS MATTERS</div>
+    Rhea Finance lost <b>$7.6M</b> · Drift Protocol lost <b>$285M</b><br>Both via oracle manipulation. Find the next targets before hackers do.
+  </div>
+  <div class="stats">
+    <div class="stat"><div class="stat-val" style="color:#FF4444" id="s-total">0</div><div class="stat-label">TARGETS</div></div>
+    <div class="stat"><div class="stat-val" style="color:#FF8800" id="s-high">0</div><div class="stat-label">HIGH RISK</div></div>
+    <div class="stat"><div class="stat-val" style="color:#FFD600" id="s-tvl">$0</div><div class="stat-label">TVL AT RISK</div></div>
+  </div>
+  <input type="text" id="search" placeholder="Search protocols..." style="margin-bottom:12px">
+  <div class="filters">
+    <select id="chain"><option value="All">All Chains</option><option>Ethereum</option><option>Arbitrum</option><option>Base</option><option>Optimism</option><option>Polygon</option><option>BSC</option><option>Avalanche</option></select>
+    <select id="sort"><option value="risk">Highest Risk</option><option value="tvl">Highest TVL</option></select>
+  </div>
+  <div class="tvl-row">
+    <div><label>MIN TVL</label><select id="minTvl"><option value="100000">$100K</option><option value="500000" selected>$500K</option><option value="1000000">$1M</option><option value="5000000">$5M</option></select></div>
+    <div><label>MAX TVL</label><select id="maxTvl"><option value="10000000">$10M</option><option value="50000000" selected>$50M</option><option value="100000000">$100M</option><option value="500000000">$500M</option></select></div>
+  </div>
+  <div id="results"><div class="loading">Scanning DeFiLlama...</div></div>
+  <div class="footer">Built by <a href="https://github.com/Jonny1111111111111">@godid242</a></div>
 </div>
+
 <script>
-try{
-var EX={Ethereum:"etherscan.io",Arbitrum:"arbiscan.io",Base:"basescan.org",Optimism:"optimistic.etherscan.io",Polygon:"polygonscan.com",BSC:"bscscan.com",Avalanche:"snowtrace.io",Fantom:"ftmscan.com",Gnosis:"gnosisscan.io",Mantle:"mantlescan.xyz",Linea:"lineascan.build",Scroll:"scrollscan.com",Blast:"blastscan.io"};
-var BIG=["aave","compound","maker","lido","morpho","spark","ethena","pendle","venus","benqi","radiant","beefy","yearn","convex","justlend","kamino","marginfi","drift","mango","solend"];
-var RW=["lend","cdp","yield","farm","staking","leverag","deriv","option","synth","algo","insur","index","vault","borrow","rwa","collateral","liquid","perp"];
-var D=[],openIdx=-1;
+var EXPLORERS={Ethereum:"etherscan.io",Arbitrum:"arbiscan.io",Base:"basescan.org",Optimism:"optimistic.etherscan.io",Polygon:"polygonscan.com",BSC:"bscscan.com",Avalanche:"snowtrace.io",Fantom:"ftmscan.com",ethereum:"etherscan.io",arbitrum:"arbiscan.io",base:"basescan.org",optimism:"optimistic.etherscan.io",polygon:"polygonscan.com",bsc:"bscscan.com",avalanche:"snowtrace.io"};
+var KNOWN=["aave","compound","maker","lido","morpho","spark","ethena","pendle","venus","benqi","radiant","beefy","yearn","convex","justlend","kamino","solend"];
+var CATS=["lend","cdp","yield","farm","staking","leverag","deriv","option","synth","algo","insur","index","vault","borrow","rwa","liquid","perp"];
+var allP=[];
+var openId=null;
 
-function $(id){return document.getElementById(id)}
-function fm(v){if(v>=1e9)return “$”+(v/1e9).toFixed(2)+“B”;if(v>=1e6)return “$”+(v/1e6).toFixed(1)+“M”;if(v>=1e3)return “$”+(v/1e3).toFixed(0)+“K”;return “$”+Math.round(v)}
-
-function isKnown(n,s){for(var i=0;i<BIG.length;i++){if(n.indexOf(BIG[i])>=0||s.indexOf(BIG[i])>=0)return true}return false}
-
-function sc(p){
-var s=0,c=(p.cat||””).toLowerCase(),kn=isKnown(p.n,p.sl),au=p.au;
-if(c.indexOf(“lend”)>=0||c.indexOf(“cdp”)>=0||c.indexOf(“borrow”)>=0)s+=40;
-else if(c.indexOf(“deriv”)>=0||c.indexOf(“option”)>=0||c.indexOf(“synth”)>=0||c.indexOf(“perp”)>=0)s+=30;
-else if(c.indexOf(“yield”)>=0||c.indexOf(“farm”)>=0||c.indexOf(“vault”)>=0)s+=25;
-else if(c.indexOf(“algo”)>=0||c.indexOf(“insur”)>=0||c.indexOf(“rwa”)>=0)s+=20;
-else s+=15;
-if(!kn&&!au)s+=30;
-if(p.tv>=1e6&&p.tv<=20e6)s+=15;else if(p.tv>20e6&&p.tv<=50e6)s+=10;
-if(p.ch&&p.ch.length>=3)s+=10;
-if(p.tv<5e6&&!kn)s+=10;
-return s;
+function formatTvl(v){
+  if(v>=1e9)return"$"+(v/1e9).toFixed(2)+"B";
+  if(v>=1e6)return"$"+(v/1e6).toFixed(1)+"M";
+  if(v>=1e3)return"$"+(v/1e3).toFixed(0)+"K";
+  return"$"+v.toFixed(0);
 }
 
-function lv(s){if(s>=70)return “CRITICAL”;if(s>=50)return “HIGH”;if(s>=30)return “MEDIUM”;return “LOW”}
-
-function load(){
-$(“res”).innerHTML=’<div class="ld"><span class="pu">🔍 Scanning 7000+ protocols…</span></div>’;
-var x=new XMLHttpRequest();
-x.open(“GET”,“https://api.llama.fi/protocols”,true);
-x.onload=function(){
-try{
-if(x.status!==200){$(“res”).innerHTML=’<div class="ld" style="color:#FF4444">API error (’+x.status+’). <button onclick="load()">Retry</button></div>’;return}
-var data=JSON.parse(x.responseText);
-D=[];
-for(var i=0;i<data.length;i++){
-var p=data[i];
-if(!p.tvl||p.tvl<=0)continue;
-var cat=(p.category||””).toLowerCase();
-var ok=false;
-for(var j=0;j<RW.length;j++){if(cat.indexOf(RW[j])>=0){ok=true;break}}
-if(!ok)continue;
-var ch=p.chains||[];
-var ev=[];for(var k=0;k<ch.length;k++){if(EX[ch[k]])ev.push(ch[k])}
-var ad={},ar=p.address||””;
-if(ar){var ps=ar.split(”,”);for(var m=0;m<ps.length;m++){var sp=ps[m].trim().split(”:”);if(sp.length===2&&sp[1].indexOf(“0x”)===0){ad[sp[0].charAt(0).toUpperCase()+sp[0].slice(1)]=sp[1]}else if(sp.length===1&&sp[0].indexOf(“0x”)===0){ad.Ethereum=sp[0]}}}
-var nm=p.name||””,sl=p.slug||””;
-var s=sc({cat:p.category||””,n:nm.toLowerCase(),sl:sl.toLowerCase(),au:p.audit_links&&p.audit_links.length>0,tv:p.tvl,ch:ch});
-D.push({nm:nm,sl:sl,tv:p.tvl,cat:p.category||“Unknown”,ch:ch,ev:ev,url:p.url||””,gh:p.github||[],al:p.audit_links||[],cd:p.change_1d,s:s,l:lv(s),ad:ad});
-}
-D.sort(function(a,b){return b.s-a.s});
-draw();
-}catch(e){$(“res”).innerHTML=’<div class="ld" style="color:#FF4444">Parse error: ‘+e.message+’<br><button onclick="load()">Retry</button></div>’}
-};
-x.onerror=function(){$(“res”).innerHTML=’<div class="ld" style="color:#FF4444">Network error. Check connection.<br><button onclick="load()" style="margin-top:10px;padding:8px 16px;background:#FF4444;border:none;border-radius:6px;color:#fff;cursor:pointer">Retry</button></div>’};
-x.timeout=30000;
-x.ontimeout=function(){$(“res”).innerHTML=’<div class="ld" style="color:#FF4444">Timeout. Slow connection.<br><button onclick="load()" style="margin-top:10px;padding:8px 16px;background:#FF4444;border:none;border-radius:6px;color:#fff;cursor:pointer">Retry</button></div>’};
-x.send();
-}
-
-function filt(){
-var mn=Number($(“minTvl”).value),mx=Number($(“maxTvl”).value);
-var cn=$(“chain”).value,sb=$(“sort”).value,q=$(“search”).value.toLowerCase();
-var r=[];
-for(var i=0;i<D.length;i++){
-var p=D[i];
-if(p.tv<mn||p.tv>mx)continue;
-if(cn!==“All”){var found=false;for(var j=0;j<p.ch.length;j++){if(p.ch[j]===cn){found=true;break}}if(!found)continue}
-if(q&&p.nm.toLowerCase().indexOf(q)<0&&p.cat.toLowerCase().indexOf(q)<0)continue;
-r.push(i);
-}
-if(sb===“tvl”)r.sort(function(a,b){return D[b].tv-D[a].tv});
-else r.sort(function(a,b){return D[b].s-D[a].s});
-return r;
-}
-
-function draw(){
-try{
-var ix=filt(),hi=0,ttv=0;
-for(var i=0;i<ix.length;i++){var p=D[ix[i]];if(p.l===“CRITICAL”||p.l===“HIGH”)hi++;ttv+=p.tv}
-$(“s1”).textContent=ix.length;
-$(“s2”).textContent=hi;
-$(“s3”).textContent=fm(ttv);
-var h=””,mx2=ix.length>50?50:ix.length;
-for(var i=0;i<mx2;i++){
-var idx=ix[i],p=D[idx],rl=p.l;
-var cs=p.ch.slice(0,3).join(”, “);if(p.ch.length>3)cs+=” +”+(p.ch.length-3);
-h+=’<div class=“cd” data-r=”’+rl+’” data-i=”’+idx+’”’+(openIdx===idx?’ style=“border-radius:10px 10px 0 0”’:’’)+’>’;
-h+=’<div class="tp"><div><div class="nm">’+p.nm+’</div><div class="mt">’+p.cat+’ · ‘+cs+’</div></div>’;
-h+=’<div class="rt"><div class="tv">’+fm(p.tv)+’</div><div class="bg" data-r="'+rl+'">’+rl+’</div></div></div></div>’;
-if(openIdx===idx){
-var rc=rl===“CRITICAL”?”#FF4444”:rl===“HIGH”?”#FF8800”:rl===“MEDIUM”?”#FFD600”:”#00BFA5”;
-var c2=(p.cat||””).toLowerCase();
-var kn=isKnown(p.nm.toLowerCase(),p.sl.toLowerCase());
-var au=p.al&&p.al.length>0;
-h+=’<div class="ex">’;
-var chg=””;if(p.cd!=null){chg=’ <span style=“color:’+(p.cd>=0?”#00BFA5”:”#FF4444”)+’”>24h: ‘+(p.cd>=0?”+”:””)+p.cd.toFixed(1)+’%</span>’}
-h+=’<div class="rw"><span>TVL: </span><b style="color:#FFD600">’+fm(p.tv)+’</b>’+chg+’</div>’;
-h+=’<div class="rw"><span>Chains: </span>’+p.ch.join(”, “)+’</div>’;
-h+=’<div class="rw"><span>Risk: </span><b style="color:'+rc+'">’+p.s+’/100 (’+rl+’)</b></div>’;
-h+=’<div class="rf"><div class="rh">⚠ ORACLE RISK FACTORS</div>’;
-if(c2.indexOf(“lend”)>=0||c2.indexOf(“cdp”)>=0||c2.indexOf(“borrow”)>=0)h+=’<div class="ri"><div class="dt" style="background:#FF4444"></div><span>Lending/CDP — collateral valued by oracle. Fake token + manipulated oracle = drain funds</span></div>’;
-if(c2.indexOf(“deriv”)>=0||c2.indexOf(“option”)>=0||c2.indexOf(“perp”)>=0)h+=’<div class="ri"><div class="dt" style="background:#FF4444"></div><span>Derivatives — settlement depends on price feeds</span></div>’;
-if(c2.indexOf(“synth”)>=0||c2.indexOf(“algo”)>=0)h+=’<div class="ri"><div class="dt" style="background:#FF4444"></div><span>Synthetic/Algo — oracle manipulation = infinite mint</span></div>’;
-if(c2.indexOf(“yield”)>=0||c2.indexOf(“farm”)>=0||c2.indexOf(“vault”)>=0)h+=’<div class="ri"><div class="dt" style="background:#FF8800"></div><span>Yield/Vault — may use oracle for share price valuation</span></div>’;
-if(c2.indexOf(“staking”)>=0||c2.indexOf(“liquid”)>=0)h+=’<div class="ri"><div class="dt" style="background:#FFD600"></div><span>Staking — exchange rate oracle can be manipulated</span></div>’;
-if(c2.indexOf(“rwa”)>=0)h+=’<div class="ri"><div class="dt" style="background:#FF8800"></div><span>RWA — real world asset pricing relies on oracle</span></div>’;
-if(!kn&&!au)h+=’<div class="ri"><div class="dt" style="background:#FF4444"></div><span>No audit found — oracle logic likely unreviewed</span></div>’;
-if(au)h+=’<div class="ri"><div class="dt" style="background:#00BFA5"></div><span>Has audit — but oracle logic may still have gaps</span></div>’;
-if(p.ch.length>=3)h+=’<div class="ri"><div class="dt" style="background:#FF8800"></div><span>’+p.ch.length+’ chains — cross-chain oracle attack surface</span></div>’;
-if(p.tv>=1e6&&p.tv<=10e6)h+=’<div class="ri"><div class="dt" style="background:#FFD600"></div><span>$1M-$10M TVL — sweet spot: worth attacking, weaker security</span></div>’;
-if(p.tv>10e6)h+=’<div class="ri"><div class="dt" style="background:#FF8800"></div><span>’+fm(p.tv)+’ TVL — high value oracle manipulation target</span></div>’;
-h+=’<div class="ri"><div class="dt" style="background:#FFD600"></div><span>ATTACK: Flash loan > manipulate DEX price > borrow against inflated collateral</span></div>’;
-h+=’<div class="ri"><div class="dt" style="background:#FFD600"></div><span>ATTACK: Create fake token > build price history > deposit as collateral > drain</span></div>’;
-h+=’</div>’;
-var ak=[];try{ak=Object.keys(p.ad||{})}catch(e){}
-if(ak.length>0){
-h+=’<div class="cb"><div class="ch">CONTRACT ADDRESSES</div>’;
-for(var j=0;j<ak.length;j++){
-var cn3=ak[j],av=p.ad[cn3],ex2=EX[cn3]||EX[cn3.toLowerCase()];
-h+=’<div class="ci"><div class="cn2">’+cn3+’</div>’;
-if(ex2){h+=’<a href="https://'+ex2+'/address/'+av+'#code" target="_blank" class="ca">’+av+’</a> <a href="https://'+ex2+'/address/'+av+'#code" target="_blank" class="vb">VIEW CODE</a>’}
-else{h+=’<span style="color:#888;font-size:9px;word-break:break-all">’+av+’</span>’}
-h+=’</div>’}
-h+=’</div>’}
-if(p.al.length>0){h+=’<div class="rw"><span>Audits: </span>’;for(var j=0;j<p.al.length;j++){h+=’<a href="'+p.al[j]+'" target="_blank" style="color:#00BFA5;font-size:9px;display:block;margin-top:2px">’+p.al[j].substring(0,55)+’…</a>’}h+=’</div>’}
-h+=’<div class="lk">’;
-if(p.url)h+=’<a href="'+p.url+'" target="_blank">Website</a>’;
-if(p.gh.length>0){var g=p.gh[0];if(g.indexOf(“http”)!==0)g=“https://github.com/”+g;h+=’<a href="'+g+'" target="_blank">GitHub</a>’}
-if(p.ev.length>0)h+=’<a href="https://'+EX[p.ev[0]]+'" target="_blank">’+p.ev[0]+’ Explorer</a>’;
-h+=’<a href="https://defillama.com/protocol/'+p.sl+'" target="_blank" class="dg">DeFiLlama</a></div>’;
-h+=’</div>’;
-}}
-if(ix.length===0)h=’<div class="ld">No protocols found. Adjust filters.</div>’;
-if(ix.length>50)h+=’<div style="text-align:center;padding:14px;color:#333;font-size:10px">Showing 50 of ‘+ix.length+’</div>’;
-$(“res”).innerHTML=h;
-}catch(e){$(“res”).innerHTML=’<div class="ld" style="color:#FF4444">Render error: ‘+e.message+’</div>’}
+function fetchData(){
+  document.getElementById("results").innerHTML='<div class="loading">Scanning 7000+ protocols from DeFiLlama...</div>';
+  fetch("https://api.llama.fi/protocols").then(function(res){
+    return res.json();
+  }).then(function(data){
+    allP=[];
+    for(var i=0;i<data.length;i++){
+      var p=data[i];
+      if(!p.tvl||p.tvl<=0)continue;
+      var cat=(p.category||"").toLowerCase();
+      var ok=false;
+      for(var j=0;j<CATS.length;j++){if(cat.indexOf(CATS[j])>=0){ok=true;break;}}
+      if(!ok)continue;
+      var name=(p.name||"").toLowerCase();
+      var slug=(p.slug||"").toLowerCase();
+      var isKn=false;
+      for(var k=0;k<KNOWN.length;k++){if(name.indexOf(KNOWN[k])>=0||slug.indexOf(KNOWN[k])>=0){isKn=true;break;}}
+      var hasAudit=p.audit_links&&p.audit_links.length>0;
+      var chains=p.chains||[];
+      var evmC=[];
+      for(var m=0;m<chains.length;m++){if(EXPLORERS[chains[m]])evmC.push(chains[m]);}
+      var addresses={};
+      var addrRaw=p.address||"";
+      if(addrRaw){
+        var parts=addrRaw.split(",");
+        for(var m=0;m<parts.length;m++){
+          var sp=parts[m].trim().split(":");
+          if(sp.length===2&&sp[1].indexOf("0x")===0){addresses[sp[0].charAt(0).toUpperCase()+sp[0].slice(1)]=sp[1];}
+          else if(sp.length===1&&sp[0].indexOf("0x")===0){addresses["Ethereum"]=sp[0];}
+        }
+      }
+      var score=0;
+      if(cat.indexOf("lend")>=0||cat.indexOf("cdp")>=0||cat.indexOf("borrow")>=0)score+=40;
+      else if(cat.indexOf("deriv")>=0||cat.indexOf("option")>=0||cat.indexOf("synth")>=0||cat.indexOf("perp")>=0)score+=30;
+      else if(cat.indexOf("yield")>=0||cat.indexOf("farm")>=0||cat.indexOf("vault")>=0)score+=25;
+      else score+=15;
+      if(!isKn&&!hasAudit)score+=30;
+      if(p.tvl>=1e6&&p.tvl<=20e6)score+=15;
+      else if(p.tvl>20e6&&p.tvl<=50e6)score+=10;
+      if(chains.length>=3)score+=10;
+      if(p.tvl<5e6&&!isKn)score+=10;
+      var level="MEDIUM";
+      if(score>=70)level="CRITICAL";
+      else if(score>=50)level="HIGH";
+      allP.push({id:p.slug||p.name,name:p.name,slug:p.slug,tvl:p.tvl,category:p.category||"Unknown",chains:chains,evmChains:evmC,url:p.url||"",github:p.github||[],auditLinks:p.audit_links||[],change_1d:p.change_1d,score:score,level:level,addresses:addresses,isKnown:isKn,hasAudit:hasAudit});
+    }
+    render();
+  }).catch(function(e){
+    document.getElementById("results").innerHTML='<div class="loading" style="color:#FF4444">Error: '+e.message+'<br><br><button onclick="fetchData()" style="padding:8px 20px;background:#FF4444;border:none;border-radius:8px;color:#fff;font-family:inherit;cursor:pointer">Retry</button></div>';
+  });
 }
 
-document.addEventListener(“click”,function(e){
-var el=e.target;
-while(el&&!el.classList.contains(“cd”)){if(el.tagName===“A”)return;el=el.parentElement}
-if(!el)return;
-var idx=parseInt(el.getAttribute(“data-i”));
-if(isNaN(idx))return;
-openIdx=openIdx===idx?-1:idx;
-draw();
+function getFiltered(){
+  var minTvl=Number(document.getElementById("minTvl").value);
+  var maxTvl=Number(document.getElementById("maxTvl").value);
+  var chain=document.getElementById("chain").value;
+  var sortBy=document.getElementById("sort").value;
+  var q=document.getElementById("search").value.toLowerCase();
+  var result=[];
+  for(var i=0;i<allP.length;i++){
+    var p=allP[i];
+    if(p.tvl<minTvl||p.tvl>maxTvl)continue;
+    if(chain!=="All"){var found=false;for(var j=0;j<p.chains.length;j++){if(p.chains[j]===chain)found=true;}if(!found)continue;}
+    if(q&&p.name.toLowerCase().indexOf(q)<0&&p.category.toLowerCase().indexOf(q)<0)continue;
+    result.push(p);
+  }
+  if(sortBy==="tvl")result.sort(function(a,b){return b.tvl-a.tvl;});
+  else result.sort(function(a,b){return b.score-a.score;});
+  return result;
+}
+
+function render(){
+  var filtered=getFiltered();
+  var high=0;var totalTvl=0;
+  for(var i=0;i<filtered.length;i++){if(filtered[i].level==="CRITICAL"||filtered[i].level==="HIGH")high++;totalTvl+=filtered[i].tvl;}
+  document.getElementById("s-total").textContent=filtered.length;
+  document.getElementById("s-high").textContent=high;
+  document.getElementById("s-tvl").textContent=formatTvl(totalTvl);
+  var html="";
+  var max=filtered.length>50?50:filtered.length;
+  for(var i=0;i<max;i++){
+    var p=filtered[i];
+    var rl=p.level.toLowerCase();
+    var sc=p.level==="CRITICAL"?"#FF4444":p.level==="HIGH"?"#FF8800":"#FFD600";
+    var isOpen=openId===i;
+    html+='<div class="card '+rl+'" style="'+(isOpen?'border-radius:10px 10px 0 0':'')+'" data-idx="'+i+'">';
+    html+='<div class="card-top"><div><div class="card-name">'+p.name+'</div><div class="card-meta">'+p.category+' · '+p.chains.slice(0,3).join(", ")+(p.chains.length>3?" +"+(p.chains.length-3):"")+'</div></div>';
+    html+='<div><div class="card-tvl">'+formatTvl(p.tvl)+'</div><div class="card-status" style="color:'+sc+'">'+p.level+' ('+p.score+')</div></div></div></div>';
+    if(isOpen){
+      var cat=p.category.toLowerCase();
+      html+='<div class="expand">';
+      var chg="";if(p.change_1d!=null){chg=' <span style="color:'+(p.change_1d>=0?"#00BFA5":"#FF4444")+'">24h: '+(p.change_1d>=0?"+":"")+p.change_1d.toFixed(1)+'%</span>';}
+      html+='<div class="expand-row"><span>TVL: </span><b style="color:#FFD600">'+formatTvl(p.tvl)+'</b>'+chg+'</div>';
+      html+='<div class="expand-row"><span>Chains: </span>'+p.chains.join(", ")+'</div>';
+      html+='<div class="expand-row"><span>Risk: </span><b style="color:'+sc+'">'+p.score+'/100 ('+p.level+')</b></div>';
+      html+='<div class="rf"><div class="rf-t">⚠ ORACLE RISK FACTORS</div>';
+      if(cat.indexOf("lend")>=0||cat.indexOf("cdp")>=0)html+='<div class="rf-i red">Lending/CDP — collateral valued by oracle. Fake token + manipulated oracle = drain</div>';
+      if(cat.indexOf("deriv")>=0||cat.indexOf("option")>=0||cat.indexOf("perp")>=0)html+='<div class="rf-i red">Derivatives — settlement depends on price feeds</div>';
+      if(cat.indexOf("synth")>=0||cat.indexOf("algo")>=0)html+='<div class="rf-i red">Synthetic/Algo — oracle manipulation = infinite mint</div>';
+      if(cat.indexOf("yield")>=0||cat.indexOf("farm")>=0||cat.indexOf("vault")>=0)html+='<div class="rf-i orange">Yield/Vault — may use oracle for share price valuation</div>';
+      if(cat.indexOf("staking")>=0||cat.indexOf("liquid")>=0)html+='<div class="rf-i yellow">Staking — exchange rate can be manipulated</div>';
+      if(!p.isKnown&&!p.hasAudit)html+='<div class="rf-i red">No audit found — oracle logic likely unreviewed</div>';
+      if(p.hasAudit)html+='<div class="rf-i green">Has audit — but oracle may still have gaps</div>';
+      if(p.chains.length>=3)html+='<div class="rf-i orange">'+p.chains.length+' chains — cross-chain oracle attack surface</div>';
+      if(p.tvl>=1e6&&p.tvl<=10e6)html+='<div class="rf-i yellow">$1M-$10M TVL — worth attacking, weaker security</div>';
+      if(p.tvl>10e6)html+='<div class="rf-i orange">'+formatTvl(p.tvl)+' TVL — high value oracle target</div>';
+      html+='<div class="rf-i yellow">ATTACK: Flash loan > manipulate DEX price > borrow against inflated collateral</div>';
+      html+='<div class="rf-i yellow">ATTACK: Create fake token > build price history > deposit as collateral > drain</div>';
+      html+='</div>';
+      var ak=Object.keys(p.addresses);
+      if(ak.length>0){
+        html+='<div class="cbox"><div style="font-size:9px;color:#00BFA5;font-weight:700;letter-spacing:1px;margin-bottom:6px">CONTRACT ADDRESSES</div>';
+        for(var j=0;j<ak.length;j++){
+          var cn=ak[j],ad=p.addresses[cn],ex=EXPLORERS[cn]||EXPLORERS[cn.toLowerCase()];
+          html+='<div style="margin-bottom:6px"><div style="font-size:9px;color:#888">'+cn+'</div>';
+          if(ex){html+='<a href="https://'+ex+'/address/'+ad+'#code" target="_blank" style="color:#FFD600;font-size:10px;word-break:break-all;text-decoration:none">'+ad+'</a> <a href="https://'+ex+'/address/'+ad+'#code" target="_blank" style="display:inline-block;margin-left:4px;padding:3px 8px;background:#FFD60020;border:1px solid #FFD60050;border-radius:4px;color:#FFD600;font-size:9px;font-weight:700;text-decoration:none">VIEW CODE</a>';}
+          else{html+='<span style="color:#CCC;font-size:10px;word-break:break-all">'+ad+'</span>';}
+          html+='</div>';
+        }
+        html+='</div>';
+      }
+      if(p.auditLinks.length>0){html+='<div class="expand-row"><span>Audits: </span>';for(var j=0;j<p.auditLinks.length;j++){html+='<a href="'+p.auditLinks[j]+'" target="_blank" style="color:#00BFA5;font-size:10px;display:block">'+p.auditLinks[j].substring(0,55)+'...</a>';}html+='</div>';}
+      html+='<div class="links">';
+      if(p.url)html+='<a href="'+p.url+'" target="_blank">Website</a>';
+      if(p.github.length>0){var gh=p.github[0];if(gh.indexOf("http")!==0)gh="https://github.com/"+gh;html+='<a href="'+gh+'" target="_blank">GitHub</a>';}
+      if(p.evmChains.length>0)html+='<a href="https://'+EXPLORERS[p.evmChains[0]]+'" target="_blank">'+p.evmChains[0]+' Explorer</a>';
+      html+='<a href="https://defillama.com/protocol/'+p.slug+'" target="_blank" class="primary">DeFiLlama</a></div>';
+      html+='</div>';
+    }
+  }
+  if(filtered.length===0)html='<div class="loading">No protocols found. Adjust filters.</div>';
+  if(filtered.length>50)html+='<div style="text-align:center;padding:16px;color:#555;font-size:11px">Showing 50 of '+filtered.length+'</div>';
+  document.getElementById("results").innerHTML=html;
+}
+
+document.getElementById("results").addEventListener("click",function(e){
+  var el=e.target;
+  while(el&&!el.getAttribute("data-idx")){if(el.tagName==="A")return;el=el.parentElement;}
+  if(!el)return;
+  var idx=parseInt(el.getAttribute("data-idx"));
+  openId=openId===idx?null:idx;
+  render();
 });
 
-$(“search”).addEventListener(“input”,draw);
-$(“chain”).addEventListener(“change”,draw);
-$(“sort”).addEventListener(“change”,draw);
-$(“minTvl”).addEventListener(“change”,draw);
-$(“maxTvl”).addEventListener(“change”,draw);
-load();
-}catch(e){document.getElementById(“res”).innerHTML=’<div style="color:red;padding:20px;text-align:center">Error: ‘+e.message+’</div>’}
+document.getElementById("search").addEventListener("input",render);
+document.getElementById("chain").addEventListener("change",render);
+document.getElementById("sort").addEventListener("change",render);
+document.getElementById("minTvl").addEventListener("change",render);
+document.getElementById("maxTvl").addEventListener("change",render);
+fetchData();
 </script>
-
 </body>
 </html>
