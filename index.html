@@ -46,10 +46,10 @@ input,select { width:100%; padding:10px 12px; background:#111118; border:1px sol
 .rf-i.orange::before { background:#FF8800; }
 .rf-i.yellow::before { background:#FFD600; }
 .rf-i.green::before { background:#00BFA5; }
-.cbox { margin:10px 0; padding:10px; background:#0F1A0F; border:1px solid #00BFA530; border-radius:8px; }
 .links { display:flex; gap:6px; flex-wrap:wrap; margin-top:10px; }
 .links a { padding:6px 12px; background:#222; border-radius:6px; color:#CCC; font-size:10px; text-decoration:none; }
-.links a.primary { background:#FF444420; border:1px solid #FF444450; color:#FF4444; font-weight:700; }
+.links a.green { background:#00BFA520; border:1px solid #00BFA550; color:#00BFA5; font-weight:700; }
+.links a.red { background:#FF444420; border:1px solid #FF444450; color:#FF4444; font-weight:700; }
 .loading { text-align:center; padding:40px; color:#555; }
 .footer { text-align:center; padding:20px; color:#333; font-size:9px; }
 .footer a { color:#FF4444; text-decoration:none; }
@@ -86,7 +86,6 @@ input,select { width:100%; padding:10px 12px; background:#111118; border:1px sol
 </div>
 
 <script>
-var EXPLORERS={Ethereum:"etherscan.io",Arbitrum:"arbiscan.io",Base:"basescan.org",Optimism:"optimistic.etherscan.io",Polygon:"polygonscan.com",BSC:"bscscan.com",Avalanche:"snowtrace.io",Fantom:"ftmscan.com",ethereum:"etherscan.io",arbitrum:"arbiscan.io",base:"basescan.org",optimism:"optimistic.etherscan.io",polygon:"polygonscan.com",bsc:"bscscan.com",avalanche:"snowtrace.io"};
 var KNOWN=["aave","compound","maker","lido","morpho","spark","ethena","pendle","venus","benqi","radiant","beefy","yearn","convex","justlend","kamino","solend"];
 var CATS=["lend","cdp","yield","farm","staking","leverag","deriv","option","synth","algo","insur","index","vault","borrow","rwa","liquid","perp"];
 var allP=[];
@@ -118,18 +117,6 @@ function fetchData(){
       for(var k=0;k<KNOWN.length;k++){if(name.indexOf(KNOWN[k])>=0||slug.indexOf(KNOWN[k])>=0){isKn=true;break;}}
       var hasAudit=p.audit_links&&p.audit_links.length>0;
       var chains=p.chains||[];
-      var evmC=[];
-      for(var m=0;m<chains.length;m++){if(EXPLORERS[chains[m]])evmC.push(chains[m]);}
-      var addresses={};
-      var addrRaw=p.address||"";
-      if(addrRaw){
-        var parts=addrRaw.split(",");
-        for(var m=0;m<parts.length;m++){
-          var sp=parts[m].trim().split(":");
-          if(sp.length===2&&sp[1].indexOf("0x")===0){addresses[sp[0].charAt(0).toUpperCase()+sp[0].slice(1)]=sp[1];}
-          else if(sp.length===1&&sp[0].indexOf("0x")===0){addresses["Ethereum"]=sp[0];}
-        }
-      }
       var score=0;
       if(cat.indexOf("lend")>=0||cat.indexOf("cdp")>=0||cat.indexOf("borrow")>=0)score+=40;
       else if(cat.indexOf("deriv")>=0||cat.indexOf("option")>=0||cat.indexOf("synth")>=0||cat.indexOf("perp")>=0)score+=30;
@@ -143,7 +130,7 @@ function fetchData(){
       var level="MEDIUM";
       if(score>=70)level="CRITICAL";
       else if(score>=50)level="HIGH";
-      allP.push({id:p.slug||p.name,name:p.name,slug:p.slug,tvl:p.tvl,category:p.category||"Unknown",chains:chains,evmChains:evmC,url:p.url||"",github:p.github||[],auditLinks:p.audit_links||[],change_1d:p.change_1d,score:score,level:level,addresses:addresses,isKnown:isKn,hasAudit:hasAudit});
+      allP.push({name:p.name,slug:p.slug,tvl:p.tvl,category:p.category||"Unknown",chains:chains,url:p.url||"",github:p.github||[],auditLinks:p.audit_links||[],change_1d:p.change_1d,score:score,level:level,isKnown:isKn,hasAudit:hasAudit});
     }
     render();
   }).catch(function(e){
@@ -208,24 +195,12 @@ function render(){
       html+='<div class="rf-i yellow">ATTACK: Flash loan > manipulate DEX price > borrow against inflated collateral</div>';
       html+='<div class="rf-i yellow">ATTACK: Create fake token > build price history > deposit as collateral > drain</div>';
       html+='</div>';
-      var ak=Object.keys(p.addresses);
-      if(ak.length>0){
-        html+='<div class="cbox"><div style="font-size:9px;color:#00BFA5;font-weight:700;letter-spacing:1px;margin-bottom:6px">CONTRACT ADDRESSES</div>';
-        for(var j=0;j<ak.length;j++){
-          var cn=ak[j],ad=p.addresses[cn],ex=EXPLORERS[cn]||EXPLORERS[cn.toLowerCase()];
-          html+='<div style="margin-bottom:6px"><div style="font-size:9px;color:#888">'+cn+'</div>';
-          if(ex){html+='<a href="https://'+ex+'/address/'+ad+'#code" target="_blank" style="color:#FFD600;font-size:10px;word-break:break-all;text-decoration:none">'+ad+'</a> <a href="https://'+ex+'/address/'+ad+'#code" target="_blank" style="display:inline-block;margin-left:4px;padding:3px 8px;background:#FFD60020;border:1px solid #FFD60050;border-radius:4px;color:#FFD600;font-size:9px;font-weight:700;text-decoration:none">VIEW CODE</a>';}
-          else{html+='<span style="color:#CCC;font-size:10px;word-break:break-all">'+ad+'</span>';}
-          html+='</div>';
-        }
-        html+='</div>';
-      }
       if(p.auditLinks.length>0){html+='<div class="expand-row"><span>Audits: </span>';for(var j=0;j<p.auditLinks.length;j++){html+='<a href="'+p.auditLinks[j]+'" target="_blank" style="color:#00BFA5;font-size:10px;display:block">'+p.auditLinks[j].substring(0,55)+'...</a>';}html+='</div>';}
       html+='<div class="links">';
+      if(p.github.length>0){var gh=p.github[0];if(gh.indexOf("http")!==0)gh="https://github.com/"+gh;html+='<a href="'+gh+'" target="_blank" class="green">GitHub (Find Contracts)</a>';}
       if(p.url)html+='<a href="'+p.url+'" target="_blank">Website</a>';
-      if(p.github.length>0){var gh=p.github[0];if(gh.indexOf("http")!==0)gh="https://github.com/"+gh;html+='<a href="'+gh+'" target="_blank">GitHub</a>';}
-      if(p.evmChains.length>0)html+='<a href="https://'+EXPLORERS[p.evmChains[0]]+'" target="_blank">'+p.evmChains[0]+' Explorer</a>';
-      html+='<a href="https://defillama.com/protocol/'+p.slug+'" target="_blank" class="primary">DeFiLlama</a></div>';
+      html+='<a href="https://defillama.com/protocol/'+p.slug+'" target="_blank" class="red">DeFiLlama</a>';
+      html+='</div>';
       html+='</div>';
     }
   }
